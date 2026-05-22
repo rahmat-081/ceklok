@@ -1,0 +1,53 @@
+﻿tanggal_isi,nama,usia,gender,pendidikan,jabatan,pekerjaan,masa_kerja,X1.1,X1.2,X1.3,X1.4,X1.5,X1.6,X1.7,X1.8,X2.1,X2.2,X2.3,X2.4,X2.5,X2.6,X2.7,X2.8,Y1,Y2,Y3,Y4,Y5,Y6,Y7,Y8
+4/17/2026 10:05,A,41-50 Tahun,Perempuan,D3,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,4,4,4,3,4,2,5,2,4,2,5,3,4,4,5,4,5,2,4,1,5,1,1,1
+4/17/2026 10:07,B,31-40 Tahun,Perempuan,D3,Kepala Seksi,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,2,4,3,4,2,4,2,3,2,5,4,4,2,4,2,4,4,3,4,4,2,2,2
+4/17/2026 10:16,C,41-50 Tahun,Laki-laki,S2,Direktur,Tenaga Kesehatan,> 15 Tahun,5,2,5,2,4,3,4,4,4,2,4,4,4,2,5,2,5,2,4,2,4,1,1,1
+4/17/2026 10:23,D,31-40 Tahun,Perempuan,SLTA / Sederajat,Kepala Regu,Non Tenaga Kesehatan,> 15 Tahun,5,3,3,3,3,3,2,2,3,3,5,5,3,3,5,5,5,1,5,1,5,2,1,1
+4/17/2026 10:25,E,51-56 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,4,3,3,4,3,3,3,4,3,3,3,4,4,3,5,3,5,1,5,1,5,1,1,1
+4/17/2026 10:58,F,31-40 Tahun,Laki-laki,S2,Manager,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
+4/17/2026 12:39,G,31-40 Tahun,Laki-laki,D4 / S1,Kepala Regu,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,5,4,4,4,3,4,4,4,4,3,3,4,2,4,3,2,4,2,4,2,4,2,2,2
+4/17/2026 12:56,H,41-50 Tahun,Perempuan,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,5,2,4,2,4,2,4,4,4,4,2,4,4,2,5,2,5,1,5,1,5,1,1,1
+4/17/2026 13:18,I,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,1,3,3,4,3,2,2,4,3,5,2,2,2,5,5,5,1,5,1,5,1,1,1
+4/17/2026 13:19,J,51-56 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,5,3,3,4,4,4,3,2,5,1,5,5,3,2,5,2,5,1,5,1,5,1,2,1
+4/17/2026 13:28,K,51-56 Tahun,Laki-laki,D4 / S1,Manager,Tenaga Kesehatan,> 15 Tahun,5,1,4,2,4,2,5,2,4,2,5,4,2,2,5,1,5,1,4,2,5,1,2,1
+4/17/2026 13:29,L,31-40 Tahun,Laki-laki,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 5 Tahun < 10 Tahun,3,3,4,4,5,1,4,3,5,1,4,3,4,2,5,4,5,1,4,2,5,1,1,1
+4/17/2026 13:36,M,31-40 Tahun,Perempuan,D3,Pelaksana,Non Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,4,4,2,4,3,5,1,4,2,4,2,3,3,4,2,5,1,5,1,5,2,3,1
+4/17/2026 13:36,N,41-50 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,5,1,4,2,5,4,5,5,4,4,5,5,2,4,5,5,5,1,5,1,5,1,2,1
+4/17/2026 13:38,O,18-30 Tahun,Perempuan,D3,Pelaksana,Non Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,5,5,1,5,5,5,1,5,1,5,4,4,1,5,1,5,1,5,1,5,1,1,1
+4/17/2026 13:51,P,41-50 Tahun,Laki-laki,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,5,2,4,2,4,3,4,2,5,1,3,2,4,2,4,2,5,1,5,2,5,1,1,1
+4/17/2026 13:58,Q,31-40 Tahun,Laki-laki,D3,Kepala Seksi,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,5,4,3,3,4,3,5,4,5,3,5,3,3,3,5,4,5,1,5,1,5,1,1,5
+4/17/2026 14:08,R,41-50 Tahun,Laki-laki,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,5,5,4,3,5,3,4,5,3,3,3,3,2,3,5,2,5,1,4,5,5,1,1,1
+4/17/2026 14:35,S,31-40 Tahun,Laki-laki,D4 / S1,Kepala Seksi,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,3,4,4,4,4,4,4,4,4,5,5,1,4,4,5,4,3,4,3,4,2,4,2
+4/17/2026 14:57,T,41-50 Tahun,Laki-laki,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,5,5,5,4,4,4,4,4,4,2,5,3,3,4,4,3,5,4,4,2,4,1,2,1
+4/17/2026 15:34,U,31-40 Tahun,Perempuan,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,4,2,3,2,4,2,3,4,4,2,3,4,4,4,5,3,4,2,4,2,5,1,4,1
+4/17/2026 15:50,V,41-50 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,5,2,4,3,3,3,2,2,4,4,3,4,4,3,4,4,5,1,5,1,5,1,1,1
+4/17/2026 16:00,W,31-40 Tahun,Perempuan,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,4,3,4,4,4,2,4,4,3,2,4,2,2,4,4,2,5,2,4,2,4,2,2,2
+4/17/2026 16:16,X,31-40 Tahun,Laki-laki,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,5,5,1,1,1,2,2,5,5,5,5,5,5,5,5,5,5,1,5,2,5,1,1,1
+4/17/2026 16:21,Y,18-30 Tahun,Perempuan,D3,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,2,2,3,3,2,4,2,5,4,4,2,4,3,4,3,4,5,1,5,1,5,1,1,1
+4/17/2026 16:21,Z,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 15 Tahun,2,2,3,3,2,4,2,5,4,4,2,4,3,4,3,4,5,1,5,1,5,1,1,1
+4/17/2026 16:42,AA,41-50 Tahun,Perempuan,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,2,2,2,3,5,1,1,5,5,1,2,5,1,4,3,3,5,1,5,1,5,1,1,1
+4/17/2026 17:51,AB,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,4,2,3,3,4,2,5,5,4,4,4,4,4,2,5,2,4,1,4,2,4,1,1,1
+4/17/2026 19:10,AC,18-30 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,5,5,5,5,5,5,5,3,2,4,4,4,4,4,4,3,3,3,3,3,3,3,3
+4/17/2026 19:17,AD,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 15 Tahun,5,3,3,3,2,4,5,5,4,4,5,4,1,5,4,4,5,1,5,1,5,1,1,1
+4/17/2026 20:10,AE,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,1,2,5,5,5,5,5,4,4,5,5,1,5,4,4,5,3,4,1,4,1,1,1
+4/18/2026 9:31,AF,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,2,3,3,3,3,3,3,5,3,3,2,2,2,4,3,3,4,2,4,2,4,2,1,1
+4/18/2026 12:30,AG,31-40 Tahun,Laki-laki,D3,Kepala Seksi,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,3,4,2,4,2,4,2,4,2,5,3,4,2,4,2,5,1,5,1,5,1,2,1
+4/18/2026 12:33,AH,51-56 Tahun,Perempuan,D4 / S1,Manager,Tenaga Kesehatan,> 15 Tahun,5,3,4,5,5,2,3,2,3,2,1,3,3,2,3,3,5,1,5,1,5,1,1,1
+4/18/2026 12:36,AI,31-40 Tahun,Laki-laki,D3,Kepala Regu,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,2,4,3,5,4,4,4,3,3,5,4,3,3,4,3,4,2,4,2,4,1,1,1
+4/18/2026 12:41,AJ,31-40 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,4,3,3,3,3,4,4,3,3,3,4,4,3,3,4,3,4,3,4,2,4,1,1,1
+4/18/2026 12:52,AK,31-40 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,2,3,4,3,2,5,5,4,5,5,3,3,3,5,3,4,1,4,1,5,1,1,1
+4/18/2026 13:06,AL,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,1,4,2,4,2,4,4,2,4,3,3,3,3,2,4,3,4,1,5,1,5,1,1,1
+4/18/2026 13:11,AM,18-30 Tahun,Perempuan,D4 / S1,Pelaksana,Non Tenaga Kesehatan,< 5 Tahun,5,1,5,1,3,2,5,1,5,1,5,1,5,1,5,2,5,1,5,2,5,1,1,1
+4/18/2026 13:27,AN,41-50 Tahun,Perempuan,D4 / S1,Kepala Regu,Tenaga Kesehatan,> 15 Tahun,5,5,4,2,5,4,3,4,3,4,4,4,3,3,4,4,5,1,5,1,5,1,1,1
+4/19/2026 10:30,AO,31-40 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,2,4,3,4,3,2,5,4,4,5,3,3,3,4,2,5,2,4,2,4,2,2,1
+4/19/2026 20:11,AP,41-50 Tahun,Perempuan,D4 / S1,Kepala Seksi,Tenaga Kesehatan,> 15 Tahun,4,1,3,3,2,4,2,4,4,2,1,5,3,4,4,4,5,1,4,1,5,1,1,1
+4/20/2026 4:46,AQ,31-40 Tahun,Perempuan,D4 / S1,Manager,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,5,1,5,1,5,1,3,1
+4/20/2026 6:16,AR,41-50 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,> 15 Tahun,5,5,5,3,4,4,4,4,4,2,3,4,4,4,5,4,5,2,5,2,5,1,1,1
+4/20/2026 7:44,AS,31-40 Tahun,Perempuan,D3,Pelaksana,Tenaga Kesehatan,> 5 Tahun < 10 Tahun,5,5,5,3,4,4,5,4,4,3,4,4,4,4,4,4,5,4,4,4,4,1,3,2
+4/20/2026 7:45,AT,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Tenaga Kesehatan,< 5 Tahun,4,2,4,2,4,2,4,4,4,4,4,3,3,2,5,4,4,2,4,2,4,1,1,1
+4/20/2026 7:47,AU,31-40 Tahun,Perempuan,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,3,3,4,3,3,4,2,4,3,3,4,3,3,3,5,4,3,4,3,3,4,2,5,3
+4/20/2026 7:52,AV,31-40 Tahun,Perempuan,D4 / S1,Kepala Regu,Non Tenaga Kesehatan,> 10 Tahun < 15 Tahun,4,4,2,4,3,3,1,5,1,1,5,5,2,5,5,2,5,1,5,1,5,1,1,1
+4/20/2026 7:52,AW,51-56 Tahun,Perempuan,D3,Pelaksana,Tenaga Kesehatan,> 15 Tahun,5,2,2,4,4,3,2,4,2,4,2,5,5,5,2,2,1,5,1,1,5,1,1,1
+4/20/2026 8:03,AX,41-50 Tahun,Laki-laki,D4 / S1,Pelaksana,Non Tenaga Kesehatan,> 15 Tahun,5,5,4,5,3,5,3,5,5,5,5,5,1,5,5,5,5,1,5,1,5,1,1,5
+4/20/2026 10:56,AY,51-56 Tahun,Perempuan,D4 / S1,Manager,Tenaga Kesehatan,> 15 Tahun,5,1,3,4,1,5,5,1,5,1,1,1,1,1,5,1,5,1,5,1,5,1,1,1
+4/20/2026 11:38,AZ,18-30 Tahun,Perempuan,SLTA / Sederajat,Pelaksana,Non Tenaga Kesehatan,> 15 Tahun,2,4,2,4,3,2,3,3,4,3,4,4,4,4,4,5,4,3,4,2,4,1,1,1

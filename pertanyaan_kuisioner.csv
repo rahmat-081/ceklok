@@ -1,0 +1,25 @@
+﻿kode,objek,pertanyaan
+X1.1,Reward adil,1. Sistem penghargaan (reward) berupa Jasa Pelayanan/Jasa Manajemen terkait kepatuhan presensi diberikan secara adil kepada seluruh karyawan.
+X1.2,Reward tidak dipengaruhi disiplin,2. Kedisiplinan (presensi ceklok) sebagai salah satu indikator penerimaan reward tidak mempengaruhi besaran Jasa Pelayanan / Jasa Manajemen yang saya terima.
+X1.3,Reward sesuai disiplin,3. Besaran Jasa Pelayanan/Jasa Manajemen/reward yang saya terima sudah sesuai dengan tingkat kedisiplinan saya dalam melakukan ceklok-presensi digital.
+X1.4,Reward tidak sebanding usaha,4. Reward berupa Jasa Pelayanan/Jasa Manajemen yang diberikan perusahaan tidak sebanding dengan usaha saya untuk selalu hadir tepat waktu.
+X1.5,Reward tepat waktu,5. Perusahaan memberikan penghargaan/reward berupa Jasa Pelayanan/Jasa Manajemen tepat pada waktu yang telah dijanjikan.
+X1.6,Reward terlambat,6. Pemberian reward berupa Jasa Pelayanan/Jasa Manajemen seringkali terlambat diberikan.
+X1.7,Transparansi reward,7. Capaian kedisiplinan karena patuh pada ceklok/presensi digital dijelaskan secara terbuka dan transparan sebagai salah satu kriteria untuk mendapatkan reward berupa Jasa Pelayanan/Jasa Manajemen.
+X1.8,Mekanisme tidak jelas,8. Mekanisme perhitungan reward terkait presensi digital belum disampaikan secara jelas kepada karyawan.
+X2.1,Aturan sanksi jelas,1. Aturan mengenai sanksi bagi karyawan yang melanggar ketentuan ceklok/presensi digital (aplikasi HORMON) tertulis dengan sangat jelas.
+X2.2,Aturan tidak jelas,2. Aturan sanksi terkait presensi ceklok belum disampaikan secara jelas kepada karyawan.
+X2.3,Sanksi konsisten,3. Sanksi diberikan secara tegas dan konsisten kepada siapa pun yang melakukan pelanggaran ceklok/presensi tanpa tebang pilih.
+X2.4,Sanksi tidak konsisten,4. Penerapan sanksi terhadap pelanggaran presensi digital belum dilakukan secara konsisten.
+X2.5,Sanksi proporsional,5. Pemotongan upah dan atau jasa pelayanan/jasa manajemen sudah proporsional dengan jenis pelanggaran presensi yang dilakukan.
+X2.6,Sanksi tidak sesuai,6. Sanksi terhadap pelanggaran presensi ceklok belum sesuai dengan tingkat pelanggaran yang terjadi.
+X2.7,Sanksi meningkatkan kewaspadaan,7. Adanya sanksi yang tegas membuat saya selalu waspada dan berhati-hati untuk tidak lupa melakukan ceklok setiap hari pada aplikasi Hormon.
+X2.8,Sanksi tidak efektif,8. Penerapan sanksi presensi digital belum efektif dalam meningkatkan kedisiplinan karyawan untuk ceklok tepat waktu.
+Y1,Ceklok tepat waktu,1. Saya selalu melakukan Ceklok Masuk dan Ceklok Pulang pada aplikasi HORMON sesuai pada waktu yang ditentukan.
+Y2,Terlambat ceklok,2. Saya seringkali terlambat melakukan ceklok karena alasan pribadi.
+Y3,Konsisten ceklok,3. Saya menggunakan aplikasi Hormon-ceklok secara konsisten setiap hari kerja tanpa pernah terlewat.
+Y4,Tidak konsisten,4. Kepatuhan saya dalam melakukan presensi ceklok belum konsisten.
+Y5,Ikuti prosedur,5. Saya selalu mengikuti semua tahapan ceklok (seperti verifikasi lokasi/GPS) sesuai prosedur yang berlaku.
+Y6,Mencari celah,6. Saya sering mencari celah untuk melakukan ceklok tanpa mengikuti prosedur yang benar (misal: menitip presensi).
+Y7,Pernah ditegur,7. Saya pernah mendapatkan teguran karena melakukan pelanggaran dalam penggunaan sistem ceklok.
+Y8,Tidak patuh aturan,8. Saya tidak mengikuti aturan penggunaan aplikasi Ceklok yang berlaku di PT KMU.
