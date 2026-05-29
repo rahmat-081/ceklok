@@ -150,8 +150,8 @@ st.subheader("4.2.2 Uji Validitas dan Reliabilitas untuk Setiap Pertanyaan Surve
 
 n = len(data_kuisioner)
 alpha = 0.05
-# Hitung r tabel untuk uji validitas
-r_tabel = t.ppf(1 - alpha / 2, df=n - 2) / np.sqrt(n - 2 + t.ppf(1 - alpha / 2, df=n - 2) ** 2)
+r_hitung = pearsonr(data_kuisioner['X1.1'], data_kuisioner['X1.2'])[0]
+r_tabel = t.ppf(1 - alpha / 2, df=n - 2) / np.sqrt(n - 2 + t.ppf(1 - alpha / 2, df=n - 2) ** 2)  
 
 # Gabung kuisioner dengan pertanyaan
 merged_data = data_kuisioner.copy()
@@ -162,37 +162,125 @@ cols_to_keep.extend([col for col in merged_data.columns if col.startswith(('X1.'
 
 merged_data = merged_data[cols_to_keep]
 
+# =========================
+# KONVERSI KE NUMERIK
+# =========================
+item_columns = [col for col in merged_data.columns 
+                if col.startswith(('X1.', 'X2.', 'Y'))]
+
+for col in item_columns:
+    merged_data[col] = pd.to_numeric(
+        merged_data[col],
+        errors='coerce'
+    )
+
+# =========================
+# REVERSE CODING OTOMATIS
+# IDENTIK SPSS
+# =========================
+
+reverse_items = []
+
+groups = ['X1', 'X2', 'Y']
+
+for group in groups:
+
+    item_cols = [
+        col for col in merged_data.columns
+        if col.startswith(group)
+    ]
+
+    for col in item_cols:
+
+        # corrected total
+        total = merged_data[item_cols] \
+                    .drop(columns=[col]) \
+                    .sum(axis=1)
+
+        r, _ = pearsonr(
+            merged_data[col],
+            total
+        )
+
+        # item negatif
+        if r < 0:
+            reverse_items.append(col)
+            
+# reverse skala likert 1-5
+for col in reverse_items:
+    if col in merged_data.columns:
+        merged_data[col] = 6 - merged_data[col]
+st.write(f"Item yang direverse coding: {', '.join(reverse_items)}")
+
 # Fungsi untuk menguji validitas
 def uji_validitas(data, variable_group):
-    """
-    Menguji validitas untuk grup variabel tertentu (X1, X2, Y)
-    """
+
     results = []
-    
-    # Ambil semua kolom yang dimulai dengan variable_group
-    item_cols = [col for col in data.columns if col.startswith(variable_group)]
-    item_objek = [col for col in data_pertanyaan['kode'] if col.startswith(variable_group)]
-    
-    # Hitung skor total untuk grup ini
-    skor_total = data[item_cols].sum(axis=1)
-    
+
+    # Ambil item sesuai variabel
+    item_cols = [
+        col for col in data.columns
+        if col.startswith(variable_group)
+    ]
+
+    # Pastikan numerik
+    data_items = data[item_cols].apply(
+        pd.to_numeric,
+        errors='coerce'
+    )
+
     for item_col in item_cols:
-        # Hitung korelasi Pearson
-        skor_total_tanpa_item = skor_total - data[item_col]
-        r_hitung, _ = pearsonr(data[item_col], skor_total_tanpa_item)
-        
-        # Tentukan validitas
-        validitas = "Valid" if abs(r_hitung) > r_tabel else "Tidak Valid"
-        
+
+        # ==========================
+        # Corrected Total Score
+        # total tanpa item yg diuji
+        # ==========================
+        total_score = data_items.drop(
+            columns=[item_col]
+        ).sum(axis=1)
+
+        # ==========================
+        # Hapus NaN
+        # ==========================
+        valid_df = pd.DataFrame({
+            'item': data_items[item_col],
+            'total': total_score
+        }).dropna()
+
+        # ==========================
+        # Pearson Correlation
+        # ==========================
+        r_hitung = valid_df['item'].corr(
+        valid_df['total'],
+        method='pearson'
+        )
+
+        # ==========================
+        # Validitas
+        # ==========================
+        validitas = (
+            "Valid"
+            if r_hitung > r_tabel
+            else "Tidak Valid"
+        )
+
+        # Ambil objek pertanyaan
+        objek = data_pertanyaan.loc[
+            data_pertanyaan['kode'] == item_col,
+            'objek'
+        ].values
+
+        objek_text = objek[0] if len(objek) > 0 else "-"
+
         results.append({
             'Kode': item_col,
-            'Objek': f"{data_pertanyaan.loc[data_pertanyaan['kode'] == item_col, 'objek'].values[0]} ",
+            'Objek': objek_text,
             'r_hitung': round(r_hitung, 3),
-            'r_tabel': r_tabel,
+            'r_tabel': round(r_tabel, 3),
             'Validitas': validitas
         })
-    
-    return pd.DataFrame(results, columns=['Kode', 'Objek', 'r_hitung', 'r_tabel', 'Validitas'], index=None)
+
+    return pd.DataFrame(results)
 
 # Uji validitas X1
 g1, g2 = st.columns((1,0.6))
@@ -223,7 +311,7 @@ g1, g2 = st.columns((1,0.6))
 with g1:
     st.write("c. Uji Validitas Y (Kepatuhan Presensi Digital):")
     validitas_y = uji_validitas(merged_data, 'Y')
-    st.dataframe(validitas_y)
+    st.dataframe(validitas_y, use_container_width=True)
 
 with g2:
     fig, ax = plt.subplots()
@@ -251,9 +339,15 @@ def uji_reliabilitas(data, variable_groups):
     
     # Hitung Cronbach's Alpha
     n = len(all_item_cols)
-    var_sum = item_data.var(axis=1).mean()
-    var_total = item_data.sum(axis=1).var()
-    cronbach_alpha = (n / (n - 1)) * (1 - (var_sum / var_total))
+    item_variance = item_data.var(axis=0, ddof=1)
+    total_variance = item_data.sum(axis=1).var(ddof=1)
+
+    cronbach_alpha = (
+        len(all_item_cols) /
+        (len(all_item_cols) - 1)
+    ) * (
+        1 - item_variance.sum() / total_variance
+    )
     
     # Tentukan keterangan
     keterangan = "Reliabel" if cronbach_alpha > 0.60 else "Tidak Reliabel"
@@ -267,22 +361,22 @@ def uji_reliabilitas(data, variable_groups):
 
 reliabilitas_result = uji_reliabilitas(merged_data, ['X1', 'X2', 'Y'])
 reliabilitas_df = pd.DataFrame([reliabilitas_result])
-st.dataframe(reliabilitas_df)
+st.dataframe(reliabilitas_df, use_container_width=True)
 
 # Uji normalitas menggunakan kolmogorov-smirnov untuk seluruh variabel
 st.subheader("4.2.3 Hasil Uji Asumsi Klasik:")
 st.write("4.2.3.1 Uji Normalitas:")
 st.write("Dasar Pengambilan Keputusan:") 
-st.write("•	Jika Sig. > 0,05 → data berdistribusi normal:")
-st.write("•	Jika Sig. ≤ 0,05 → data tidak normal:")
+st.write("• Jika Sig. > 0,05 → data berdistribusi normal:")
+st.write("• Jika Sig. ≤ 0,05 → data tidak normal:")
 
 def uji_normalitas(data, variable_group, label):
     """
     Menguji normalitas menggunakan Kolmogorov-Smirnov untuk grup variabel tertentu
     """
     item_cols = [col for col in data.columns if col.startswith(variable_group)]
-    skor_total = data[item_cols].sum(axis=1)
-    
+    skor_total = data[item_cols].sum(axis=1).dropna()
+        
     # Uji Kolmogorov-Smirnov
     statistic, p_value = kstest(skor_total, 'norm', args=(skor_total.mean(), skor_total.std()))
     
@@ -304,7 +398,7 @@ normalitas_results = [
 ]
 
 normalitas_df = pd.DataFrame(normalitas_results)
-st.dataframe(normalitas_df)
+st.dataframe(normalitas_df, use_container_width=True)
 
 # uji normalitas menggunakan kolmogorov smirnov untuk semua variabel secara total
 st.write("Uji Normalitas Menggunakan Kolmogorov-Smirnov untuk Semua Variabel Secara Total:")
@@ -313,13 +407,13 @@ skor_total_all = merged_data[all_item_cols].sum(axis=1)
 statistic_all, p_value_all = kstest(skor_total_all, 'norm', args=(skor_total_all.mean(), skor_total_all.std()))
 keterangan_all = "Normal" if p_value_all > 0.05 else "Tidak normal"
 normalitas_all_df = pd.DataFrame([{ 'Variabel': 'Semua Variabel', 'N': len(merged_data), 'Sig. (K-S)': round(p_value_all, 3), 'Keterangan': keterangan_all }])
-st.dataframe(normalitas_all_df)
+st.dataframe(normalitas_all_df, use_container_width=True)
 
 # uji multikolinearitas menggunakan korelasi Pearson untuk variabel reward (X1) dan variabel sanksi (X2)
 st.write("4.2.3.2 Uji Multikolinearitas untuk Variabel X1 (Reward) dan X2 (Sanksi):")
 st.write("Dasar Pengambilan Keputusan:") 
-st.write("•	Tolerance > 0,10 → tidak terjadi multikolinearitas:")
-st.write("•	VIF < 10 → tidak terjadi multikolinearitas:")
+st.write("• Tolerance > 0,10 → tidak terjadi multikolinearitas:")
+st.write("• VIF < 10 → tidak terjadi multikolinearitas:")
 
 def uji_multikolinearitas(data, variable_groups):
     """
@@ -357,7 +451,7 @@ def uji_multikolinearitas(data, variable_groups):
     return pd.DataFrame(results)
 
 multikolinearitas_df = uji_multikolinearitas(merged_data, [('X1', 'Reward (X1)'), ('X2', 'Sanksi (X2)')])
-st.dataframe(multikolinearitas_df)
+st.dataframe(multikolinearitas_df, use_container_width=True)
 
 # Uji Regresi Linear Berganda
 
@@ -442,8 +536,7 @@ y = Y_scores
 regresi_df = uji_regresi_linear_berganda(X, y)
 st.subheader("4.2.4 Uji Regresi Linear Berganda:")
 st.write("Dasar Penentuan:", "Sig. < 0,05 → Signifikan" " dan jika Sig. > 0,05 → Tidak signifikan")
-st.dataframe(regresi_df)
-
+st.dataframe(regresi_df, use_container_width=True)
 
 # Pengujian hipotesis untuk uji t dengan dasar penentuan: Sig. < 0,05 → Tolak H0 (Signifikan) dan jika Sig. > 0,05 → Gagal Tolak H0 (Tidak signifikan)
 st.subheader("4.2.5 Pengujian Hipotesis:")
@@ -465,8 +558,7 @@ for i, var_name in enumerate(var_names):
     })
 
 hipotesis_df = pd.DataFrame(hipotesis_results)
-st.dataframe(hipotesis_df)
-
+st.dataframe(hipotesis_df, use_container_width=True)
 
 # pengujian hipotesis untuk uji F dengan dasar penentuan: Sig. < 0,05 → Tolak H0 (Signifikan) dan jika Sig. > 0,05 → Gagal Tolak H0 (Tidak signifikan)
 st.write("2. Uji F:")
@@ -497,7 +589,7 @@ uji_f_df = pd.DataFrame([{
     'Keterangan': keterangan_f
 }])
 
-st.dataframe(uji_f_df)
+st.dataframe(uji_f_df, use_container_width=True)
 
 # Uji Koefisien Determinasi (R²)
 st.subheader("4.2.6 Uji Koefisien Determinasi (R²):")
@@ -514,12 +606,12 @@ st.dataframe(koef_det_df)
 
 # Menampilkan data hasil survey
 st.write("Data Hasil Survey:")
-st.dataframe(data_kuisioner)
+st.dataframe(data_kuisioner, use_container_width=True)
 
 # Menampilkan data pertanyaan survey
 st.write("Data Pertanyaan Survey:")
-st.dataframe(data_pertanyaan)
+st.dataframe(data_pertanyaan, use_container_width=True)
 
 # menampilkan r_tabel
 st.write("Tabel R Tabel untuk Uji Validitas:")
-st.dataframe(r_tabel_df)
+st.dataframe(r_tabel_df, use_container_width=True)
