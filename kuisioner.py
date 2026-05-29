@@ -12,7 +12,7 @@ Hasil pengolahan yang diharapkan:
 '''
 import streamlit as st
 import pandas as pd
-from scipy.stats import t, pearsonr, kstest
+from scipy.stats import t, pearsonr, kstest, f as f_dist
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -150,17 +150,16 @@ st.subheader("4.2.2 Uji Validitas dan Reliabilitas untuk Setiap Pertanyaan Surve
 
 n = len(data_kuisioner)
 alpha = 0.05
-r_hitung = pearsonr(data_kuisioner['X1.1'], data_kuisioner['X1.2'])[0]
-r_tabel = t.ppf(1 - alpha / 2, df=n - 2) / np.sqrt(n - 2 + t.ppf(1 - alpha / 2, df=n - 2) ** 2)  
+r_tabel = t.ppf(1 - alpha / 2, df=n - 2) / np.sqrt(n - 2 + t.ppf(1 - alpha / 2, df=n - 2) ** 2) 
 
-# Gabung kuisioner dengan pertanyaan
-merged_data = data_kuisioner.copy()
 
 # Kolom yang dipertahankan dari kuisioner
-cols_to_keep = ['tanggal_isi', 'nama', 'usia', 'gender', 'pendidikan', 'jabatan', 'pekerjaan', 'masa_kerja']
-cols_to_keep.extend([col for col in merged_data.columns if col.startswith(('X1.', 'X2.', 'Y'))])
+cols_to_keep = []
+cols_to_keep.extend([col for col in data_kuisioner.columns if col.startswith(('X1.', 'X2.', 'Y'))])
 
-merged_data = merged_data[cols_to_keep]
+merged_data = data_kuisioner[cols_to_keep]
+
+
 
 # =========================
 # KONVERSI KE NUMERIK
@@ -174,44 +173,7 @@ for col in item_columns:
         errors='coerce'
     )
 
-# =========================
-# REVERSE CODING OTOMATIS
-# IDENTIK SPSS
-# =========================
-
-reverse_items = []
-
-groups = ['X1', 'X2', 'Y']
-
-for group in groups:
-
-    item_cols = [
-        col for col in merged_data.columns
-        if col.startswith(group)
-    ]
-
-    for col in item_cols:
-
-        # corrected total
-        total = merged_data[item_cols] \
-                    .drop(columns=[col]) \
-                    .sum(axis=1)
-
-        r, _ = pearsonr(
-            merged_data[col],
-            total
-        )
-
-        # item negatif
-        if r < 0:
-            reverse_items.append(col)
             
-# reverse skala likert 1-5
-for col in reverse_items:
-    if col in merged_data.columns:
-        merged_data[col] = 6 - merged_data[col]
-st.write(f"Item yang direverse coding: {', '.join(reverse_items)}")
-
 # Fungsi untuk menguji validitas
 def uji_validitas(data, variable_group):
 
@@ -228,58 +190,20 @@ def uji_validitas(data, variable_group):
         pd.to_numeric,
         errors='coerce'
     )
-
-    for item_col in item_cols:
-
-        # ==========================
-        # Corrected Total Score
-        # total tanpa item yg diuji
-        # ==========================
-        total_score = data_items.drop(
-            columns=[item_col]
-        ).sum(axis=1)
-
-        # ==========================
-        # Hapus NaN
-        # ==========================
-        valid_df = pd.DataFrame({
-            'item': data_items[item_col],
-            'total': total_score
-        }).dropna()
-
-        # ==========================
-        # Pearson Correlation
-        # ==========================
-        r_hitung = valid_df['item'].corr(
-        valid_df['total'],
-        method='pearson'
-        )
-
-        # ==========================
-        # Validitas
-        # ==========================
-        validitas = (
-            "Valid"
-            if r_hitung > r_tabel
-            else "Tidak Valid"
-        )
-
-        # Ambil objek pertanyaan
-        objek = data_pertanyaan.loc[
-            data_pertanyaan['kode'] == item_col,
-            'objek'
-        ].values
-
-        objek_text = objek[0] if len(objek) > 0 else "-"
-
+    # Hitung skor total untuk grup variabel
+    skor_total = data_items.sum(axis=1)
+    # Uji validitas untuk setiap item
+    for item in item_cols:
+        # Hitung korelasi Pearson antara item dan skor total
+        validitas, _ = pearsonr(data_items[item].dropna(), skor_total.dropna())
+        keterangan = "Valid" if abs(validitas) > r_tabel else "Tidak Valid"
         results.append({
-            'Kode': item_col,
-            'Objek': objek_text,
-            'r_hitung': round(r_hitung, 3),
+            'Item': item,
+            'r_hitung': round(validitas, 3), 
             'r_tabel': round(r_tabel, 3),
-            'Validitas': validitas
+            'Validitas': keterangan
         })
-
+        
     return pd.DataFrame(results)
 
 # Uji validitas X1
@@ -326,36 +250,31 @@ def uji_reliabilitas(data, variable_groups):
     """
     Menguji reliabilitas menggunakan Cronbach's Alpha untuk gabungan grup variabel
     """
-    from scipy.stats import f as f_dist
-    
-    # Ambil semua item dari variable_groups
-    all_item_cols = []
+    item_cols = []
     for var_group in variable_groups:
-        item_cols = [col for col in data.columns if col.startswith(var_group)]
-        all_item_cols.extend(item_cols)
+        item_cols.extend([col for col in data.columns if col.startswith(var_group)])
     
-    # Ekstrak data item
-    item_data = data[all_item_cols]
-    
-    # Hitung Cronbach's Alpha
-    n = len(all_item_cols)
-    item_variance = item_data.var(axis=0, ddof=1)
-    total_variance = item_data.sum(axis=1).var(ddof=1)
-
-    cronbach_alpha = (
-        len(all_item_cols) /
-        (len(all_item_cols) - 1)
-    ) * (
-        1 - item_variance.sum() / total_variance
+    data_items = data[item_cols].apply(
+        pd.to_numeric,
+        errors='coerce'
     )
     
-    # Tentukan keterangan
-    keterangan = "Reliabel" if cronbach_alpha > 0.60 else "Tidak Reliabel"
+    # Hitung skor total
+    skor_total = data_items.sum(axis=1)
+    
+    # Hitung varians total dan varians item
+    var_total = skor_total.var()
+    var_items = data_items.var()
+    
+    # Hitung Cronbach's Alpha
+    n_items = len(item_cols)
+    alpha = (n_items / (n_items - 1)) * (1 - var_items.sum() / var_total) if var_total > 0 else 0
+    
+    keterangan = "Reliabel" if alpha >= 0.6 else "Tidak Reliabel"
     
     return {
-        'Variabel': 'Semua Variabel (X1, X2, Y)',
-        'Jumlah Item': n,
-        "Cronbach's Alpha": round(cronbach_alpha, 3),
+        'Variabel': 'Gabungan X1, X2, Y',
+        'Cronbach\'s Alpha': round(alpha, 3),
         'Keterangan': keterangan
     }
 
@@ -384,6 +303,10 @@ def uji_normalitas(data, variable_group, label):
     keterangan = "Normal" if p_value > 0.05 else "Tidak normal"
     
     return {
+        'Mean': round(skor_total.mean(), 3),
+        'Std Dev': round(skor_total.std(), 3),
+        'Statistic': round(statistic, 3),
+        "p_value": round(p_value, 3),
         'Variabel': label,
         'N': len(data),
         'Sig. (K-S)': round(p_value, 3),
@@ -402,12 +325,38 @@ st.dataframe(normalitas_df, use_container_width=True)
 
 # uji normalitas menggunakan kolmogorov smirnov untuk semua variabel secara total
 st.write("Uji Normalitas Menggunakan Kolmogorov-Smirnov untuk Semua Variabel Secara Total:")
-all_item_cols = [col for col in merged_data.columns if col.startswith(('X1.', 'X2.', 'Y'))]
-skor_total_all = merged_data[all_item_cols].sum(axis=1)
-statistic_all, p_value_all = kstest(skor_total_all, 'norm', args=(skor_total_all.mean(), skor_total_all.std()))
-keterangan_all = "Normal" if p_value_all > 0.05 else "Tidak normal"
-normalitas_all_df = pd.DataFrame([{ 'Variabel': 'Semua Variabel', 'N': len(merged_data), 'Sig. (K-S)': round(p_value_all, 3), 'Keterangan': keterangan_all }])
-st.dataframe(normalitas_all_df, use_container_width=True)
+merged_data['Total_Skor'] = merged_data[[col for col in merged_data.columns if col.startswith(('X1.', 'X2.', 'Y'))]].sum(axis=1)
+statistic, p_value = kstest(merged_data['Total_Skor'].dropna(), 'norm', args=(merged_data['Total_Skor'].mean(), merged_data['Total_Skor'].std()))
+keterangan = "Normal" if p_value > 0.05 else "Tidak normal"
+normalitas_total_df = pd.DataFrame([{
+    'Mean': round(merged_data['Total_Skor'].mean(), 3),
+    'Std Dev': round(merged_data['Total_Skor'].std(), 3),
+    'Statistic': round(statistic, 3),
+    "p_value": round(p_value, 3),
+    'Variabel': 'Total Skor',
+    'N': len(merged_data),
+    'Sig. (K-S)': round(p_value, 3),
+    'Keterangan': keterangan
+}])
+st.dataframe(normalitas_total_df, use_container_width=True)
+
+# Uji normalitas menggunakan kolmogorov smirnov untuk satu sampel dengan dasar penentuan: Sig. > 0,05 → data berdistribusi normal dan jika Sig. ≤ 0,05 → data tidak normal
+st.write("Uji Normalitas Menggunakan Kolmogorov-Smirnov untuk Satu Sampel dengan Dasar Penentuan:")
+st.write("• Sig. > 0,05 → data berdistribusi normal:")
+st.write("• Sig. ≤ 0,05 → data tidak normal:")
+statistic, p_value = kstest(merged_data['Total_Skor'].dropna(), 'norm', args=(merged_data['Total_Skor'].mean(), merged_data['Total_Skor'].std()))
+keterangan = "Normal" if p_value > 0.05 else "Tidak normal"
+normalitas_satu_sampel_df = pd.DataFrame([{
+    'Mean': round(merged_data['Total_Skor'].mean(), 3),
+    'Std Dev': round(merged_data['Total_Skor'].std(), 3),
+    'Statistic': round(statistic, 3),
+    "p_value": round(p_value, 3),
+    'Variabel': 'Total Skor',
+    'N': len(merged_data),
+    'Sig. (K-S)': round(p_value, 3),
+    'Keterangan': keterangan
+}])
+st.dataframe(normalitas_satu_sampel_df, use_container_width=True)
 
 # uji multikolinearitas menggunakan korelasi Pearson untuk variabel reward (X1) dan variabel sanksi (X2)
 st.write("4.2.3.2 Uji Multikolinearitas untuk Variabel X1 (Reward) dan X2 (Sanksi):")
